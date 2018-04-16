@@ -1,0 +1,30 @@
+h1{
+    font-family: 'Lobster', cursive;
+    text-align: center;
+    font-size: 6em;
+}
+
+h4{
+    font-family: 'Hi Melody', cursive;
+    text-align: center;
+    font-size: 1.5em;
+}
+
+.main_content {
+    height: 35em;
+    background-image: url("../images/sakura/sakura.png");
+    /* background-repeat: no-repeat; */
+}
+
+.custom_col{
+    border:dotted .3em lightgreen;
+}
+
+.sub_col {
+    height: 4em;
+}
+
+img {
+    width: 10em;
+    height: 10em;
+}

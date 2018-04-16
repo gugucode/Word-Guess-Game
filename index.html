@@ -1,0 +1,106 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <title>Word Guess Game</title>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width; initial-scale=1.0; maximum-scale=1.0; user-scalable=0;" />
+    <link rel="stylesheet" type="text/css" href="assets/css/reset.css">
+    <link href="https://fonts.googleapis.com/css?family=Hi+Melody|Lobster" rel="stylesheet">
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
+    <link rel="stylesheet" type="text/css" href="assets/css/style.css">
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js" integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl" crossorigin="anonymous"></script>
+    <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js" integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN" crossorigin="anonymous"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js" integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q" crossorigin="anonymous"></script>
+    <script defer src="https://use.fontawesome.com/releases/v5.0.9/js/all.js" integrity="sha384-8iPTk2s/jMVj81dnzb/iFR2sdA7u06vHJyyLlAd4snFpCl/SnyUjRrbdJsw1pGIl" crossorigin="anonymous"></script>
+</head>
+
+<body>
+    <div class="container-fluid">
+        <!-- navigation bar -->
+        <div class="row justify-content-center" style="background-color: lightgreen">
+            <div class="col-12 col-md-9 ">
+                <h1>HANGMAN</h1>
+            </div>
+        </div>
+
+        <!-- main content -->
+        <div class="row justify-content-center main_content">
+            <!-- show image -->
+            <div class="col-12 col-md-3 m-3 custom_col">
+                <div class="row justify-content-center">
+                    <div class="col-12 col-md-9 align-self-center">
+                        <img src="assets/images/background.JPG">
+                    </div>
+                </div>
+            </div>
+
+            <!-- game content -->
+            <div class="col-12 col-md-6 m-3 custom_col">
+                <!-- help how to start game -->
+                <div class="row justify-content-center">
+                    <div class="col-12 align-self-center sub_col">
+                        <h4>Press any key to get started!</h3>
+                    </div>
+                </div>
+
+                <!-- show number of winned games -->
+                <div class="row justify-content-center">
+                    <div class="col-12 align-self-center sub_col">
+                        <h4>Wins: <span id="win_num">0</span></h4>
+                    </div>
+                </div>
+                    
+                <!-- current word header -->
+                <div class="row justify-content-center">
+                    <div class="col-12 align-self-center sub_col">
+                        <h4>Current Word</h4>
+                    </div>
+                </div>
+
+                <!-- word -->
+                <div class="row justify-content-center">
+                    <div class="col-12 align-self-center sub_col">
+                        <span id="word"></span>
+                    </div>
+                </div>
+                
+                <!-- number of guesses remaining header-->
+                <div class="row justify-content-center">
+                    <div class="col-12 align-self-center sub_col">
+                        <h4>Number of guesses remaining</h4>
+                    </div>
+                </div>
+
+                <!-- number of guesses remaining -->
+                <div class="row justify-content-center">
+                    <div class="col-12 align-self-center sub_col">
+                        <span id="guesses_num"></span>
+                    </div>
+                </div>
+
+                <!-- letters already guessed header -->
+                <div class="row justify-content-center">
+                    <div class="col-12 align-self-center sub_col">
+                        <h4>Letters Already Guessed</h4>
+                    </div>
+                </div>
+
+                <!-- letters already guessed -->
+                <div class="row justify-content-center">
+                    <div class="col-12 align-self-center sub_col">
+                        <span id="guessed_letter"></span>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <!-- footer -->
+        <div class="row" style="height:4em;border-top:lightgreen solid .5em;">
+            <div class="col-12 align-self-end">
+                <h4>Copyright©️</h4>
+            </div>
+        </div>
+    </div>
+</body>
+
+</html>

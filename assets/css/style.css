@@ -28,3 +28,7 @@ img {
     width: 10em;
     height: 10em;
 }
+
+span {
+    letter-spacing: 4px;
+}

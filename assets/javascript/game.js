@@ -1,11 +1,12 @@
 
-var flowers_array = ["bluebell","anemone","daisy","dahlia"];
+var flowers_array = ["allium","anemone","azalea","begonia","blackthorn","bloodroot","bluebell","boronia","bottlebrush","camellias","cornflower","cosmos","crocus","dahlia","daisy",
+"freesia","gardenia","geranium","hawthorn","hollyhock","jasmine","lilacs","lisianthus","magnolia","poppy","rose","snowdrop","tulip","zinnia"];
 var wins_num = 0;
 var current_word = "";
 var total_guess = 15;
 var guesses_remaining = 0;
 var guessed_letters = [];
-
+var guessed_words = [];
 // randomly pick a word, set current word
 function setCurrentWord(){
     var index = Math.floor(Math.random()*flowers_array.length);
@@ -19,7 +20,7 @@ function setCurrentWord(){
 function getCurrentGuessWord(){
     var word = "";
     for(var i=0;i<current_word.length;i++){
-        if(guessed_letters.indexOf(current_word.charAt(i)) != -1){
+        if(guessed_letters.indexOf(current_word.charAt(i).toUpperCase()) != -1){
             word += current_word.charAt(i);
         }else{
             word += "_";
@@ -42,14 +43,46 @@ function resetGame(){
     printStatus(getCurrentGuessWord());
 }
 
+function updateScroll(){
+    var element = document.getElementById("history_window");
+    // element.scrollIntoView = element.scrollHeight;
+    window.scrollBy(0,element.scrollHeight);
+}
+
+// print game's history
+function appendHistory(word,win) {
+    //print guessed word
+    var node = document.createElement("LI");
+    node.textContent = word;
+    document.getElementById("history").appendChild(node);
+
+    // print check mark
+    var i_node = document.createElement("I");
+    li_elems = document.getElementsByTagName("li")
+    li_elems[li_elems.length-1].appendChild(i_node);
+
+    //set check mark class
+    var i_elems = document.getElementsByTagName("i");
+    var last_i = i_elems[i_elems.length-1];
+    if(win){
+        last_i.setAttribute("class","far fa-check-circle win")
+    }else{
+        last_i.setAttribute("class","far fa-times-circle lose")
+    }
+    updateScroll();
+}
+
+
 document.onkeyup = function(event) {
-    // play presses any key to start the game 
+    // play presses any key to start the game
+    console.log(event.keyCode);
     if(current_word == ""){
-        // set the word to start game
+        // set the word then start the game
         setCurrentWord();
-    }else if(guessed_letters.length == 0 || guessed_letters.indexOf(event.key) == -1){
+    }else if((64 < event.keyCode && event.keyCode < 91) 
+                && (guessed_letters.length == 0 || guessed_letters.indexOf(event.key.toUpperCase()) == -1)){
         // add guessed letter to guessed_letters array
-        guessed_letters.push(event.key);
+        guessed_letters.push(event.key.toUpperCase());
         guesses_remaining--;
     }
 
@@ -60,10 +93,12 @@ document.onkeyup = function(event) {
     if(current_guess_word.indexOf("_") == -1){
         wins_num++;
         document.getElementById("flowerimg").src="assets/images/"+current_guess_word+".jpg";
-        alert("You won!");
+        appendHistory(current_word,true);
+        // alert("You won!");
         resetGame();
     }else if(guesses_remaining == 0){
-        alert("You lost!");
+        appendHistory(current_word,false);
+        // alert("You lost!");
         resetGame();
     }else{
         printStatus(current_guess_word);

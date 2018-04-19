@@ -1,118 +1,140 @@
+var game = {
+    // variables
+    words: ["allium","anemone","azalea","begonia","blackthorn","bloodroot",
+            "bluebell","boronia","bottlebrush","camellias","cornflower",
+            "cosmos","crocus","dahlia","daisy","freesia","gardenia","geranium",
+            "hawthorn","hollyhock","jasmine","lilacs","lisianthus","magnolia",
+            "poppy","rose","snowdrop","tulip","zinnia"],
+    winTotal: 0,
+    currentWord: "",
+    currentGuessWord: "",
+    totalGuess: 14,
+    remainingGuess: 14,
+    guessedLetters: [],
+    guessedWords: [],
+    winSound: "assets/sounds/win.mp3",
+    loseSound: "assets/sounds/lose.mp3",
 
-var flowers_array = ["allium","anemone","azalea","begonia","blackthorn","bloodroot","bluebell","boronia","bottlebrush","camellias","cornflower","cosmos","crocus","dahlia","daisy",
-"freesia","gardenia","geranium","hawthorn","hollyhock","jasmine","lilacs","lisianthus","magnolia","poppy","rose","snowdrop","tulip","zinnia"];
-var wins_num = 0;
-var current_word = "";
-var total_guess = 15;
-var guesses_remaining = 0;
-var guessed_letters = [];
-var guessed_words = [];
+    // methods
+    // randomly pick a word
+    setCurrentWord: function() {
+        var index = Math.floor(Math.random()*this.words.length);
+        this.currentWord = this.words[index];
+        console.log(this.currentWord);
+        this.remainingGuess = this.totalGuess;
+        this.guessedLetters = [];
+    },
 
-// randomly pick a word
-function setCurrentWord(){
-    var index = Math.floor(Math.random()*flowers_array.length);
-    current_word = flowers_array[index];
-    console.log(current_word);
-    guesses_remaining = total_guess;
-    guessed_letters = [];
-}
-
-// get the current guess word (correct letter + place holders ("-"))
-function getCurrentGuessWord(){
-    var word = "";
-    for(var i=0;i<current_word.length;i++){
-        if(guessed_letters.indexOf(current_word.charAt(i).toUpperCase()) != -1){
-            word += current_word.charAt(i);
-        }else{
-            word += "_";
+    // get the user's answer (correct letter + place holders ("-"))
+    getCurrentGuessWord: function() {
+        var word = "";
+        for(var i=0;i<this.currentWord.length;i++){
+            if(this.guessedLetters.indexOf(this.currentWord.charAt(i).toUpperCase()) != -1){
+                word += this.currentWord.charAt(i);
+            }else{
+                word += "_";
+            }
         }
-    }
-    return word;
-}
+        this.currentGuessWord = word;
+        return word;
+    },
 
-// print game's current status
-function printStatus(current_guess_word){
-    document.getElementById("win_num").innerHTML = wins_num;
-    document.getElementById("word").innerHTML = current_guess_word;
-    document.getElementById("guesses_num").innerHTML = guesses_remaining;
-    document.getElementById("guessed_letter").innerHTML = guessed_letters;
-}
+    // save guessed letter to this.guessedLetters
+    addGuessedLetter: function(letter){
+        this.guessedLetters.push(letter);
+    },
 
-//reset game when player wins or loses
-function resetGame(){
-    setCurrentWord();
-    printStatus(getCurrentGuessWord());
-}
+    //reset game when player wins or loses
+    resetGame: function() {
+        this.setCurrentWord();
+        this.getCurrentGuessWord();
+    },
 
-function scrollDown(){
-    var element = document.getElementById("history_window");
-    var topPos = element.offsetTop;
-    element.scrollTop = topPos;
-}
+    // play sound
+    playSound: function(id,src) {
+        var sound = document.getElementById(id);
+        sound.setAttribute("src",src);
+        sound.setAttribute("volume",0.1);
+        sound.setAttribute("preload", "auto");
+        sound.setAttribute("controls", "none");
+        sound.style.display = "none"; 
+        sound.play();    
+    },
 
-// print game's history
-function appendHistory(word,win) {
-    //print guessed word
-    var node = document.createElement("LI");
-    node.textContent = word;
-    document.getElementById("history").appendChild(node);
+    // print image
+    printImage: function(id){
+        document.getElementById(id).src="assets/images/"+this.currentWord+".jpg";
+    },
 
-    // print check mark
-    var i_node = document.createElement("I");
-    li_elems = document.getElementsByTagName("li")
-    li_elems[li_elems.length-1].appendChild(i_node);
+    // print game's current status
+    printStatus: function(win_id,word_id,remaining_id,guessletter_id){
+        document.getElementById(win_id).innerHTML = this.winTotal;
+        document.getElementById(word_id).innerHTML = this.currentGuessWord;
+        document.getElementById(remaining_id).innerHTML = this.remainingGuess;
+        document.getElementById(guessletter_id).innerHTML = this.guessedLetters;
+    },
 
-    //set check mark class
-    var i_elems = document.getElementsByTagName("i");
-    var last_i = i_elems[i_elems.length-1];
-    if(win){
-        last_i.setAttribute("class","far fa-check-circle win")
-    }else{
-        last_i.setAttribute("class","far fa-times-circle lose")
-    }
-    scrollDown();
-}
+    // scroll down to buttom of element
+    scrollDown: function(id){
+        var element = document.getElementById(id);
+        var topPos = element.offsetTop;
+        element.scrollTop = topPos;
+    },
 
-function playSound(id,src) {
-    var sound = document.getElementById(id);
-    sound.src = src;
-    sound.setAttribute("preload", "auto");
-    sound.setAttribute("controls", "none");
-    sound.style.display = "none"; 
-    sound.play();
-    
-}
+    // print game's history
+    appendHistory: function(isWin,elem_id) {
+        //print guessed word
+        var li_elem = document.createElement("li");
+        li_elem.textContent = this.currentWord;
+        document.getElementById("list").appendChild(li_elem);
 
+        // print check mark
+        var i_elem = document.createElement("i");
+        li_elem.appendChild(i_elem);
+
+        //set check mark class
+        if(isWin){
+            i_elem.setAttribute("class","far fa-check-circle win")
+        }else{
+            i_elem.setAttribute("class","far fa-times-circle lose")
+        }
+        this.scrollDown(elem_id);
+    },
+
+};
+
+
+// var game = new game();
 document.onkeyup = function(event) {
-    // play presses any key to start the game
-    if(current_word == ""){
+    if(game.currentWord == ""){
         // set the word then start the game
-        setCurrentWord();
+        game.setCurrentWord();
+        document.getElementById("presskey").setAttribute("style","display:none");
     }else if((64 < event.keyCode && event.keyCode < 91) 
-                && (guessed_letters.length == 0 || guessed_letters.indexOf(event.key.toUpperCase()) == -1)){
-        // add guessed letter to guessed_letters array
-        guessed_letters.push(event.key.toUpperCase());
-        guesses_remaining--;
+                && (game.guessedLetters.length == 0 
+                    || game.guessedLetters.indexOf(event.key.toUpperCase()) == -1)){
+        // save guessed letter
+        game.addGuessedLetter(event.key.toUpperCase());
+        game.remainingGuess--;
     }
 
     // get the current guess word (guessed (correct) letter + place holders)
-    var current_guess_word = getCurrentGuessWord();
+    var current_guess_word = game.getCurrentGuessWord();
 
     // check if play wins or loses
     if(current_guess_word.indexOf("_") == -1){
-        wins_num++;
-        playSound("sound","assets/sounds/win.mp3");
-        document.getElementById("flowerimg").src="assets/images/"+current_guess_word+".jpg";
-        appendHistory(current_word,true);
-        // alert("You won!");
-        resetGame();
-    }else if(guesses_remaining == 0){
-        playSound("sound","assets/sounds/lose.mp3");
-        appendHistory(current_word,false);
-        // alert("You lost!");
-        resetGame();
-    }else{
-        printStatus(current_guess_word);
+        game.winTotal++;
+        game.playSound("sound","assets/sounds/win.mp3");
+        game.printImage("flowerimg");
+        game.appendHistory(true,"history_window");
+        game.resetGame();
+    }else if(game.remainingGuess == 0){
+        game.playSound("sound","assets/sounds/lose.mp3");
+        game.appendHistory(false,"history_window");
+        game.resetGame();
     }
+    
+    game.printStatus("win_num","word","guesses_num","guessed_letter");
+ 
     
 }

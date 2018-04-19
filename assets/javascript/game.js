@@ -7,7 +7,8 @@ var total_guess = 15;
 var guesses_remaining = 0;
 var guessed_letters = [];
 var guessed_words = [];
-// randomly pick a word, set current word
+
+// randomly pick a word
 function setCurrentWord(){
     var index = Math.floor(Math.random()*flowers_array.length);
     current_word = flowers_array[index];
@@ -16,7 +17,7 @@ function setCurrentWord(){
     guessed_letters = [];
 }
 
-// get the current guess word (guessed (correct) letter + place holders ("-"))
+// get the current guess word (correct letter + place holders ("-"))
 function getCurrentGuessWord(){
     var word = "";
     for(var i=0;i<current_word.length;i++){
@@ -43,10 +44,10 @@ function resetGame(){
     printStatus(getCurrentGuessWord());
 }
 
-function updateScroll(){
+function scrollDown(){
     var element = document.getElementById("history_window");
-    // element.scrollIntoView = element.scrollHeight;
-    window.scrollBy(0,element.scrollHeight);
+    var topPos = element.offsetTop;
+    element.scrollTop = topPos;
 }
 
 // print game's history
@@ -69,13 +70,21 @@ function appendHistory(word,win) {
     }else{
         last_i.setAttribute("class","far fa-times-circle lose")
     }
-    updateScroll();
+    scrollDown();
 }
 
+function playSound(id,src) {
+    var sound = document.getElementById(id);
+    sound.src = src;
+    sound.setAttribute("preload", "auto");
+    sound.setAttribute("controls", "none");
+    sound.style.display = "none"; 
+    sound.play();
+    
+}
 
 document.onkeyup = function(event) {
     // play presses any key to start the game
-    console.log(event.keyCode);
     if(current_word == ""){
         // set the word then start the game
         setCurrentWord();
@@ -92,11 +101,13 @@ document.onkeyup = function(event) {
     // check if play wins or loses
     if(current_guess_word.indexOf("_") == -1){
         wins_num++;
+        playSound("sound","assets/sounds/win.mp3");
         document.getElementById("flowerimg").src="assets/images/"+current_guess_word+".jpg";
         appendHistory(current_word,true);
         // alert("You won!");
         resetGame();
     }else if(guesses_remaining == 0){
+        playSound("sound","assets/sounds/lose.mp3");
         appendHistory(current_word,false);
         // alert("You lost!");
         resetGame();

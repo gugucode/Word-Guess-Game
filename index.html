@@ -16,6 +16,11 @@
 </head>
 
 <body>
+    <audio id="sound" style="display:none">
+        <!-- <source src="assets/sounds/win.mp3" type="audio/mpeg">
+        Your browser does not support the audio element. -->
+    </audio>
+
     <div class="container-fluid">
         <!-- header -->
         <div class="row justify-content-center" style="background-color: lightgreen">
@@ -53,7 +58,7 @@
 
                 <!-- show game history -->
                 <div class="row justify-content-center m-2 h-50">
-                    <div class="col-12 px-4" id="history_window" style="overflow: auto">
+                    <div class="col-12 px-4" id="history_window" style="overflow: scroll">
                         <ol id="history" style="padding:0;">
 
                         </ol>

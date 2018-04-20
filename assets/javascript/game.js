@@ -8,8 +8,8 @@ var game = {
     winTotal: 0,
     currentWord: "",
     currentGuessWord: "",
-    totalGuess: 14,
-    remainingGuess: 14,
+    totalGuess: 15,
+    remainingGuess: 15,
     guessedLetters: [],
     guessedWords: [],
     winSound: "assets/sounds/win.mp3",
@@ -44,6 +44,16 @@ var game = {
         this.guessedLetters.push(letter);
     },
 
+    // increase winTotal by 1
+    addWinNum: function() {
+        this.winTotal++;
+    },
+
+    // reduce remainingGuess by 1
+    reduceRemainingGuessNum: function(){
+        this.remainingGuess--;
+    },
+
     //reset game when player wins or loses
     resetGame: function() {
         this.setCurrentWord();
@@ -62,8 +72,12 @@ var game = {
     },
 
     // print image
-    printImage: function(id){
-        document.getElementById(id).src="assets/images/"+this.currentWord+".jpg";
+    printImage: function(img_id,text_id){
+        var hover_text = document.getElementById(text_id)
+        hover_text.textContent= this.currentGuessWord;
+        hover_text.setAttribute("style","color:green");
+        var img_element = document.getElementById(img_id)
+        img_element.src="assets/images/"+this.currentWord+".jpg";
     },
 
     // print game's current status
@@ -94,9 +108,11 @@ var game = {
 
         //set check mark class
         if(isWin){
-            i_elem.setAttribute("class","far fa-check-circle win")
+            i_elem.setAttribute("class","far fa-check-circle win");
+            i_elem.setAttribute("style","color:green");
         }else{
-            i_elem.setAttribute("class","far fa-times-circle lose")
+            i_elem.setAttribute("class","far fa-times-circle lose");
+            i_elem.setAttribute("style","color:red");
         }
         this.scrollDown(elem_id);
     },
@@ -115,7 +131,7 @@ document.onkeyup = function(event) {
                     || game.guessedLetters.indexOf(event.key.toUpperCase()) == -1)){
         // save guessed letter
         game.addGuessedLetter(event.key.toUpperCase());
-        game.remainingGuess--;
+        game.reduceRemainingGuessNum();
     }
 
     // get the current guess word (guessed (correct) letter + place holders)
@@ -123,9 +139,9 @@ document.onkeyup = function(event) {
 
     // check if play wins or loses
     if(current_guess_word.indexOf("_") == -1){
-        game.winTotal++;
+        game.addWinNum();
         game.playSound("sound","assets/sounds/win.mp3");
-        game.printImage("flowerimg");
+        game.printImage("flowerimg","flowername");
         game.appendHistory(true,"history_window");
         game.resetGame();
     }else if(game.remainingGuess == 0){

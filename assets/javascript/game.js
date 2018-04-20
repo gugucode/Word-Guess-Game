@@ -20,7 +20,7 @@ var game = {
     setCurrentWord: function() {
         var index = Math.floor(Math.random()*this.words.length);
         this.currentWord = this.words[index];
-        console.log(this.currentWord);
+        // console.log(this.currentWord);
         this.remainingGuess = this.totalGuess;
         this.guessedLetters = [];
     },
